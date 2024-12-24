@@ -1,29 +1,13 @@
 defmodule GateioAuthWeb.Router do
   use GateioAuthWeb, :router
 
-  pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_live_flash
-    plug :put_root_layout, html: {GateioAuthWeb.Layouts, :root}
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
-  end
-
   pipeline :api do
     plug :accepts, ["json"]
   end
 
-  scope "/", GateioAuthWeb do
-    pipe_through :browser
-
-    get "/", PageController, :home
+  scope "/api", GateioAuthWeb do
+    pipe_through :api
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", GateioAuthWeb do
-  #   pipe_through :api
-  # end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:gateio_auth, :dev_routes) do
@@ -35,7 +19,7 @@ defmodule GateioAuthWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/dev" do
-      pipe_through :browser
+      pipe_through [:fetch_session, :protect_from_forgery]
 
       live_dashboard "/dashboard", metrics: GateioAuthWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview

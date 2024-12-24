@@ -7,7 +7,7 @@ defmodule GateioAuthWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_gateio_auth_key",
-    signing_salt: "Et/J6cj/",
+    signing_salt: "kp/psoTl",
     same_site: "Lax"
   ]
 
@@ -28,9 +28,8 @@ defmodule GateioAuthWeb.Endpoint do
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
-    socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
-    plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
+    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :gateio_auth
   end
 
   plug Phoenix.LiveDashboard.RequestLogger,

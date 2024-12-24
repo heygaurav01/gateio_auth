@@ -9,6 +9,7 @@ defmodule GateioAuth.Application do
   def start(_type, _args) do
     children = [
       GateioAuthWeb.Telemetry,
+      GateioAuth.Repo,
       {DNSCluster, query: Application.get_env(:gateio_auth, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: GateioAuth.PubSub},
       # Start the Finch HTTP client for sending emails

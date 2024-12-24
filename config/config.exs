@@ -8,6 +8,7 @@
 import Config
 
 config :gateio_auth,
+  ecto_repos: [GateioAuth.Repo],
   generators: [timestamp_type: :utc_datetime]
 
 # Configures the endpoint
@@ -15,11 +16,11 @@ config :gateio_auth, GateioAuthWeb.Endpoint,
   url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
-    formats: [html: GateioAuthWeb.ErrorHTML, json: GateioAuthWeb.ErrorJSON],
+    formats: [json: GateioAuthWeb.ErrorJSON],
     layout: false
   ],
   pubsub_server: GateioAuth.PubSub,
-  live_view: [signing_salt: "Im41BfN2"]
+  live_view: [signing_salt: "/jVWGfeR"]
 
 # Configures the mailer
 #
@@ -29,28 +30,6 @@ config :gateio_auth, GateioAuthWeb.Endpoint,
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
 config :gateio_auth, GateioAuth.Mailer, adapter: Swoosh.Adapters.Local
-
-# Configure esbuild (the version is required)
-config :esbuild,
-  version: "0.17.11",
-  gateio_auth: [
-    args:
-      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
-    cd: Path.expand("../assets", __DIR__),
-    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
-  ]
-
-# Configure tailwind (the version is required)
-config :tailwind,
-  version: "3.4.3",
-  gateio_auth: [
-    args: ~w(
-      --config=tailwind.config.js
-      --input=css/app.css
-      --output=../priv/static/assets/app.css
-    ),
-    cd: Path.expand("../assets", __DIR__)
-  ]
 
 # Configures Elixir's Logger
 config :logger, :console,

@@ -1,10 +1,23 @@
 import Config
 
+# Configure your database
+#
+# The MIX_TEST_PARTITION environment variable can be used
+# to provide built-in test partitioning in CI environment.
+# Run `mix help test` for more information.
+config :gateio_auth, GateioAuth.Repo,
+  username: "postgres",
+  password: "postgres",
+  hostname: "localhost",
+  database: "gateio_auth_test#{System.get_env("MIX_TEST_PARTITION")}",
+  pool: Ecto.Adapters.SQL.Sandbox,
+  pool_size: System.schedulers_online() * 2
+
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :gateio_auth, GateioAuthWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "mqlkmqZQCz4km8iNC/yhpAWpaS4J7pWHd5nofgmazGb6dfk+h4Ybj9PFZ251WJMA",
+  secret_key_base: "nG2JwS5S2/gCtzo7Y+1lM3hYYqqDMFWEyJ/3hEZLyxJX15E1grSEVwh6oLwl+iXL",
   server: false
 
 # In test we don't send emails
@@ -18,7 +31,3 @@ config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
-
-# Enable helpful, but potentially expensive runtime checks
-config :phoenix_live_view,
-  enable_expensive_runtime_checks: true
