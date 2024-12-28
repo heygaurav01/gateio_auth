@@ -11,7 +11,7 @@ defmodule GateioAuth.Auth do
   """
   def generate_signature(method, url, query_string \\ "", payload \\ "") do
     timestamp = DateTime.utc_now |> DateTime.to_unix
-    hashed_payload = :crypto.hash(:sha512, git checkout -b main) |> Base.encode16(case: :lower)
+    hashed_payload = :crypto.hash(:sha512, payload) |> Base.encode16(case: :lower)
 
     # Create the string to sign
     string_to_sign = "#{method}\n#{url}\n#{query_string}\n#{hashed_payload}\n#{timestamp}" |>dbg
